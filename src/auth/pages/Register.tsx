@@ -1,6 +1,7 @@
 import { useState, FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { Alert } from "../../ui/Alert";
+import axiosClient from "../../config/axiosClient";
 
 export const Register = () => {
   const [name, setName] = useState<string>("");
@@ -8,8 +9,9 @@ export const Register = () => {
   const [password, setPassword] = useState<string>("");
   const [passwordRepeat, setPasswordRepeat] = useState<string>("");
   const [msg, setMsg] = useState<string>("");
+  const [error, setError] = useState<boolean>(true);
 
-  const handleSubmit = (e: FormEvent<HTMLInputElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLInputElement>) => {
     e.preventDefault();
     if ([name, email, password, passwordRepeat].includes("")) {
       setMsg("All fields are required");
@@ -19,7 +21,7 @@ export const Register = () => {
 
       return;
     }
-    if (password.length < 6) {
+    if (password.length <= 6) {
       setMsg("Create a password with minimum 7 characters");
       setTimeout(() => {
         setMsg("");
@@ -33,6 +35,29 @@ export const Register = () => {
       }, 3000);
       return;
     }
+    try {
+      const { data } = await axiosClient.post("/users", {
+        name,
+        email,
+        password,
+      });
+      setMsg(data.msg);
+      setError(false);
+      setTimeout(() => {
+        setMsg("");
+        setError(true);
+      }, 5000);
+
+      setEmail("");
+      setName("");
+      setPassword("");
+      setPasswordRepeat("");
+    } catch (error: any) {
+      setMsg(error.response.data.msg);
+      setTimeout(() => {
+        setMsg("");
+      }, 5000);
+    }
   };
 
   return (
@@ -40,8 +65,8 @@ export const Register = () => {
       <h1 className="text-indigo-700 text-2xl capitalize text-center">
         Create <span className="font-semibold">an account</span>
       </h1>
-      {msg.length !== 0 && <Alert msg={msg} />}
-      <form className="my-5 bg-white shadow-sm p-10 rounded-lg">
+      {msg.length !== 0 && <Alert error={error} msg={msg} />}
+      <form className="my-5 bg-white p-10 rounded-lg">
         <input
           className="capitalize p-2 border-b w-full border-indigo-300 mt-5"
           placeholder="Enter Your Name"
