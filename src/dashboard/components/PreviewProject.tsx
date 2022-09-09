@@ -10,7 +10,7 @@ interface ProjectProps {
 
 export const PreviewProject = ({ name, _id, client }: ProjectProps) => {
   return (
-    <div className="border-b p-5 flex justify-between items-center">
+    <div className="border-b p-5 flex justify-between items-center ">
       <p className="font-semibold">
         {client}{" "}
         <span className="text-base text-indigo-500 font-light">| {name} </span>
@@ -18,7 +18,7 @@ export const PreviewProject = ({ name, _id, client }: ProjectProps) => {
 
       <Link
         to={`${_id}`}
-        className="flex items-center justify-between gap-2 text-indigo-600 hover:text-red-600 transition-colors delay-75"
+        className="flex items-center justify-between  text-indigo-600 hover:text-red-600 transition-all delay-75 gap-1 hover:gap-2"
       >
         View <IoIosArrowForward className="text-xl" />
       </Link>

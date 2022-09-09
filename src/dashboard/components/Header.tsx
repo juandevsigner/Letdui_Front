@@ -4,8 +4,8 @@ import { IoMdExit } from "react-icons/io";
 
 export const Header = () => {
   return (
-    <header className="px-4 py-5 shadow-sm">
-      <div className="md:flex md:justify-between md:items-center">
+    <header className="px-4 py-5  shadow-sm">
+      <div className="flex justify-between md:items-center">
         <h2 className="text-xl text-indigo-600 font-semibold ">Letdui APP</h2>
         <input
           type="seacrh"
@@ -19,7 +19,7 @@ export const Header = () => {
           >
             Projects
           </Link>
-          <button className="rounded-full bg-gray-200 hover:bg-gray-500 hover:text-white p-2 flex items-center gap-2 transition-colors delay-75">
+          <button className="rounded-full  hover:bg-gray-400 hover:text-gray-100 p-2 flex items-center gap-2 transition-colors delay-75">
             Logout
             <IoMdExit className="text-xl" />
           </button>

@@ -12,7 +12,7 @@ export const Projects = () => {
 
   return (
     <>
-      <div>
+      <div className="h-screen">
         {projects?.length ? (
           <div className="bg-white rounded-lg shadow-sm mt-5 p-5">
             <p className="text-indigo-600 font-semibold text-center text-2xl capitalize">

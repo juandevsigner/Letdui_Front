@@ -10,6 +10,7 @@ export const Login = () => {
   const [msg, setMsg] = useState<string>("");
   const [error, setError] = useState<boolean>(true);
   const { setAuth } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -30,6 +31,7 @@ export const Login = () => {
       setPassword("");
       localStorage.setItem("token", data.token);
       setAuth(data);
+      navigate("/projects");
     } catch (error: any) {
       setMsg(error.response.data.msg);
       setTimeout(() => {

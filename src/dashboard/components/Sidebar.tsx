@@ -14,7 +14,7 @@ export const Sidebar = () => {
       </div>
 
       <Link
-        className="bg-indigo-600 justify-between flex items-center mt-5 rounded-full py-2 px-4 text-white hover:bg-indigo-800 transition-colors delay-75"
+        className="bg-indigo-600 justify-between  flex items-center mt-5 rounded-full py-2 px-4 text-white hover:bg-indigo-800 transition-colors delay-75"
         to="new-project"
       >
         <p>New Project</p>
