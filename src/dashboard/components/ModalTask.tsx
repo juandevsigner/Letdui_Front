@@ -3,7 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useProjects } from "../../hooks";
 import { FormTask } from "./FormTask";
 
-const ModalTask = () => {
+export const ModalTask = () => {
   const { modal, handleModalTask } = useProjects();
 
   return (
@@ -78,5 +78,3 @@ const ModalTask = () => {
     </Transition.Root>
   );
 };
-
-export default ModalTask;

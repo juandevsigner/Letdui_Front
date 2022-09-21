@@ -6,3 +6,5 @@ export * from "./ModalTask";
 export * from "./ModalDeleteTask";
 export * from "./FormTask";
 export * from "./Task";
+export * from "./FormCollaborator";
+export * from "./Collaborator";

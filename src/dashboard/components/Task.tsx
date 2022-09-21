@@ -56,7 +56,7 @@ export const Task = ({
       <div className="flex md:flex-col gap-2">
         <button
           type="button"
-          className="flex items-center justify-between delay-100 w-full cursor-pointer transition-all  p-2 rounded-full text-white bg-indigo-600 hover:bg-indigo-800 transition-colors"
+          className="flex items-center justify-between delay-100 w-full cursor-pointer transition-all  p-2 rounded-full text-white bg-indigo-600 hover:bg-indigo-800 "
           onClick={() => handleEditTask(TaskObject)}
         >
           <p className="hidden md:flex">Edit</p>
@@ -65,7 +65,7 @@ export const Task = ({
         </button>
         <button
           type="button"
-          className="flex items-center justify-between delay-100 w-full cursor-pointer transition-all  p-2 rounded-full text-white bg-red-600 hover:bg-red-800 transition-colors"
+          className="flex items-center justify-between delay-100 w-full cursor-pointer transition-all  p-2 rounded-full text-white bg-red-600 hover:bg-red-800 "
           onClick={() => handleModalDeleteTask(TaskObject)}
         >
           <p className="hidden md:flex">Delete</p>
@@ -76,7 +76,7 @@ export const Task = ({
         {state ? (
           <button
             type="button"
-            className="flex items-center justify-between delay-100 w-full cursor-pointer transition-all  p-2 rounded-full text-white bg-lime-600 hover:bg-lime-800 transition-colors"
+            className="flex items-center justify-between delay-100 w-full cursor-pointer transition-all  p-2 rounded-full text-white bg-lime-600 hover:bg-lime-800 "
           >
             <p className="hidden md:flex">Complete</p>
 
@@ -85,7 +85,7 @@ export const Task = ({
         ) : (
           <button
             type="button"
-            className="flex items-center  justify-between delay-100 w-full cursor-pointer transition-all  p-2 rounded-full bg-gray-200 hover:bg-gray-400 transition-colors"
+            className="flex items-center  justify-between delay-100 w-full cursor-pointer transition-all  p-2 rounded-full bg-gray-200 hover:bg-gray-400 "
           >
             <p className="hidden md:flex">Incomplete</p>
 

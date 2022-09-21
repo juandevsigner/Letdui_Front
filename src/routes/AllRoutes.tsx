@@ -1,7 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthLayout, PrivateRoutes } from "../layouts";
 import { Login, Register, NewPass, RecoverPass, Confirm } from "../auth";
-import { Projects, NewProject, Project, EditProject } from "../dashboard";
+import {
+  Projects,
+  NewProject,
+  Project,
+  EditProject,
+  NewCollaborator,
+} from "../dashboard";
 import { AuthProvider, ProjectsProvider } from "../context";
 
 const AllRoutes = () => {
@@ -20,6 +26,10 @@ const AllRoutes = () => {
 
             <Route path="/projects" element={<PrivateRoutes />}>
               <Route index element={<Projects />} />
+              <Route
+                path="new-collaborator/:id"
+                element={<NewCollaborator />}
+              />
               <Route path=":id" element={<Project />} />
               <Route path="edit/:id" element={<EditProject />} />
               <Route path="new-project" element={<NewProject />} />

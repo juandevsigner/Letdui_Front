@@ -92,7 +92,7 @@ export const FormTask = () => {
             <option>High</option>
           </select>
           <input
-            className="mt-7 delay-100 w-full cursor-pointer transition-all px-5 py-3 rounded-full text-white bg-indigo-600 hover:bg-indigo-800 transition-colors"
+            className="mt-7 delay-100 w-full cursor-pointer transition-all px-5 py-3 rounded-full text-white bg-indigo-600 hover:bg-indigo-800 "
             value={id ? "Save Changes" : "Create Task"}
             type="submit"
             onClick={handleSubmit}

@@ -6,9 +6,11 @@ import { BsPlus } from "react-icons/bs";
 import { HiOutlineChevronRight } from "react-icons/hi";
 import { useProjects } from "../../hooks";
 import { Alert, Spinner } from "../../ui";
-import ModalTask from "../components/ModalTask";
-import { Task } from "../components";
-import { Task as TaskInterface } from "../../context/interfacesContext";
+import { Task, ModalTask, Collaborator } from "../components";
+import {
+  Task as TaskInterface,
+  Collaborator as CollaboratorInt,
+} from "../../context/interfacesContext";
 import ModalDeleteTask from "../components/ModalDeleteTask";
 
 export const Project = () => {
@@ -19,6 +21,8 @@ export const Project = () => {
   useEffect(() => {
     getProject(params.id);
   }, []);
+
+  console.log(project);
 
   if (load) return <Spinner />;
 
@@ -71,7 +75,7 @@ export const Project = () => {
       </div>
       <div className="fixed  right-10 bottom-6">
         <button
-          className=" flex items-center delay-100 transition-all px-5 py-3 rounded-full text-white bg-indigo-600 hover:bg-indigo-800 transition-colors gap-1 hover:gap-2"
+          className=" flex items-center delay-100 transition-all px-5 py-3 rounded-full text-white bg-indigo-600 hover:bg-indigo-800  gap-1 hover:gap-2"
           type="button"
           onClick={handleModalTask}
         >
@@ -79,6 +83,27 @@ export const Project = () => {
           <BsPlus className="text-2xl" />
         </button>
       </div>
+      <div className="flex items-center justify-between mt-5">
+        <p>Collaborators</p>
+        <Link
+          className=" delay-100 transition-all px-5 py-3 rounded-full text-white bg-orange-600 hover:bg-orange-800  gap-1 hover:gap-2"
+          to={`/projects/new-collaborator/${project._id}`}
+        >
+          Add
+        </Link>
+      </div>
+      {project?.collaborators?.length ? (
+        <div className="bg-white shadow-sm rounded-lg mt-5">
+          {project.collaborators?.map(
+            ({ name, _id, email }: CollaboratorInt) => (
+              <Collaborator name={name} key={_id} email={email} />
+            )
+          )}
+        </div>
+      ) : (
+        <p>No collaborators yet - Add a Collaborator - click on button "Add"</p>
+      )}
+
       <ModalTask />
       <ModalDeleteTask />
     </div>

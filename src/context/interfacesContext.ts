@@ -17,15 +17,24 @@ export interface Project {
   client: string;
   deliveryDate: string;
   //TODO: tipar las funciones
-  map?: any;
-  length?: any;
-  find?: any;
+  map?: () => void | undefined;
+  length?: () => void | undefined;
+  find?: () => void | undefined;
   tasks: Task;
+  collaborators: Collaborator;
+}
+
+export interface Collaborator {
+  email: string;
+  name: string;
+  _id?: string;
+  map?: any;
+  length?: () => void;
 }
 
 export interface Task {
   _id?: any;
-  length?: any;
+  length?: () => void;
   map?: any;
   deliveryDate?: string | undefined;
   name: string;
@@ -37,6 +46,11 @@ export interface Task {
   state?: boolean;
 }
 
+export interface CollaboratorInt {
+  email: string;
+  name: string;
+  _id: string;
+}
 export interface ValuePropsProjects {
   projects: Project;
   setProjects: React.Dispatch<React.SetStateAction<any>>;
@@ -50,6 +64,8 @@ export interface ValuePropsProjects {
   deleteTask: () => Promise<void>;
   submitTask: (task: Task) => Promise<void>;
   handleEditTask: (task: Task) => Promise<void>;
+  submitCollaborator: (email: string) => Promise<void>;
+  addCollaborator: (email: object) => Promise<void>;
   handleModalDeleteTask: (task: any) => any;
   handleModalTask: () => any;
   msg: string;
@@ -62,4 +78,6 @@ export interface ValuePropsProjects {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
   modalDeleteTask: boolean;
   setModalDeleteTask: React.Dispatch<React.SetStateAction<boolean>>;
+  collaborator: CollaboratorInt;
+  setCollaborator: React.Dispatch<React.SetStateAction<CollaboratorInt>>;
 }

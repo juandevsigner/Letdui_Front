@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState, useEffect, createContext, Children } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../config/axiosClient";
@@ -6,6 +7,7 @@ import {
   ValuePropsProjects,
   Project,
   Task,
+  CollaboratorInt,
 } from "./interfacesContext";
 
 const ProjectsContext = createContext({} as ValuePropsProjects);
@@ -14,11 +16,12 @@ const ProjectsProvider = ({ children }: Provider) => {
   const [projects, setProjects] = useState<any>([]);
   const [project, setProject] = useState<any>({});
   const [task, setTask] = useState<any>({});
-  const [load, setLoad] = useState(false);
+  const [load, setLoad] = useState<boolean>(false);
   const [msg, setMsg] = useState<string>("");
   const [error, setError] = useState<boolean>(true);
   const [modal, setModal] = useState<boolean>(false);
   const [modalDeleteTask, setModalDeleteTask] = useState<boolean>(false);
+  const [collaborator, setCollaborator] = useState<any>({});
 
   const navigate = useNavigate();
 
@@ -223,7 +226,9 @@ const ProjectsProvider = ({ children }: Provider) => {
         taskState._id === data._id ? data : taskState
       );
       setProject(projectUpdate);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const submitTask = async (task: Task) => {
@@ -259,7 +264,7 @@ const ProjectsProvider = ({ children }: Provider) => {
         },
       };
       //TODO: pendiente por revisar, pq no actualiza el state
-      const { data } = await axiosClient.delete(`/task/${task.id}`, config);
+      const { data } = await axios(`/task/${task.id}`, config);
       console.log(data);
 
       setModalDeleteTask(!modalDeleteTask);
@@ -269,6 +274,7 @@ const ProjectsProvider = ({ children }: Provider) => {
         setMsg("");
         setError(true);
       }, 3000);
+
       /*  const projectUpdate = { ...project };
       projectUpdate.tasks = projectUpdate.tasks.filter(
         (taskState: Task) => taskState.id !== task.id
@@ -278,6 +284,75 @@ const ProjectsProvider = ({ children }: Provider) => {
       setTask({});
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const submitCollaborator = async (email: string) => {
+    const emailBody = {
+      email,
+    };
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config: any = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axiosClient.post(
+        "/projects/team",
+        emailBody,
+        config
+      );
+
+      setCollaborator(data);
+    } catch (error: any) {
+      setMsg(error.response.data.msg);
+      setError(true);
+      setTimeout(() => {
+        setMsg("");
+        setError(true);
+      }, 3000);
+    }
+  };
+
+  const addCollaborator = async (email: object) => {
+    const token = localStorage.getItem("token");
+    try {
+      if (!token) return;
+
+      const config: any = {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axiosClient.post(
+        `/projects/team/${project._id}`,
+        email,
+        config
+      );
+
+      setCollaborator({});
+      setMsg(data.msg);
+      setError(false);
+      setTimeout(() => {
+        setMsg("");
+        setError(true);
+      }, 3000);
+    } catch (error: any) {
+      setMsg(error.response.data.msg);
+      setError(true);
+      setTimeout(() => {
+        setMsg("");
+        setError(true);
+      }, 3000);
     }
   };
 
@@ -308,6 +383,10 @@ const ProjectsProvider = ({ children }: Provider) => {
         setModalDeleteTask,
         handleModalDeleteTask,
         deleteTask,
+        submitCollaborator,
+        addCollaborator,
+        collaborator,
+        setCollaborator,
       }}
     >
       {children}
