@@ -4,8 +4,7 @@ import { BsCheck } from "react-icons/bs";
 import { GrFormClose } from "react-icons/gr";
 import { Task as TaskInterface } from "../../context/interfacesContext";
 import { dateFormat } from "../../helpers/dateFormat";
-import { useProjects } from "../../hooks";
-import { useEffect } from "react";
+import { useProjects, useAdmin } from "../../hooks";
 
 export const Task = ({
   name,
@@ -14,8 +13,11 @@ export const Task = ({
   id,
   date,
   state,
+  completed,
 }: TaskInterface) => {
-  const { handleEditTask, handleModalDeleteTask } = useProjects();
+  const { handleEditTask, handleModalDeleteTask, completeTask } = useProjects();
+
+  const admin = useAdmin();
 
   const TaskObject: TaskInterface = {
     name,
@@ -24,6 +26,7 @@ export const Task = ({
     id,
     date,
     state,
+    completed,
   };
   return (
     <div className="border-b p-5 flex flex-col md:flex-row justify-between items-center">
@@ -52,46 +55,53 @@ export const Task = ({
             {priority}
           </span>{" "}
         </p>
+        {state && (
+          <p className="text-xs text-green-500">
+            Completed by:{" "}
+            <span className="font-semibold capitalize ">{completed.name}</span>
+          </p>
+        )}
       </div>
       <div className="flex md:flex-col gap-2">
-        <button
-          type="button"
-          className="flex items-center justify-between delay-100 w-full cursor-pointer transition-all  p-2 rounded-full text-white bg-indigo-600 hover:bg-indigo-800 "
-          onClick={() => handleEditTask(TaskObject)}
-        >
-          <p className="hidden md:flex">Edit</p>
+        {admin && (
+          <>
+            <button
+              type="button"
+              className="flex items-center justify-between delay-100 w-full cursor-pointer transition-all  p-2 rounded-full text-white bg-indigo-600 hover:bg-indigo-800 "
+              onClick={() => handleEditTask(TaskObject)}
+            >
+              <p className="hidden md:flex">Edit</p>
 
-          <FiEdit className="text-xl" />
-        </button>
-        <button
-          type="button"
-          className="flex items-center justify-between delay-100 w-full cursor-pointer transition-all  p-2 rounded-full text-white bg-red-600 hover:bg-red-800 "
-          onClick={() => handleModalDeleteTask(TaskObject)}
-        >
-          <p className="hidden md:flex">Delete</p>
+              <FiEdit className="text-xl" />
+            </button>
+            <button
+              type="button"
+              className="flex items-center justify-between delay-100 w-full cursor-pointer transition-all  p-2 rounded-full text-white bg-red-600 hover:bg-red-800 "
+              onClick={() => handleModalDeleteTask(TaskObject)}
+            >
+              <p className="hidden md:flex">Delete</p>
 
-          <HiTrash className="text-xl" />
-        </button>
-
-        {state ? (
-          <button
-            type="button"
-            className="flex items-center justify-between delay-100 w-full cursor-pointer transition-all  p-2 rounded-full text-white bg-lime-600 hover:bg-lime-800 "
-          >
-            <p className="hidden md:flex">Complete</p>
-
-            <BsCheck className="text-2xl" />
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="flex items-center  justify-between delay-100 w-full cursor-pointer transition-all  p-2 rounded-full bg-gray-200 hover:bg-gray-400 "
-          >
-            <p className="hidden md:flex">Incomplete</p>
-
-            <GrFormClose className="text-xl " />
-          </button>
+              <HiTrash className="text-xl" />
+            </button>
+          </>
         )}
+
+        <button
+          onClick={() => completeTask(TaskObject.id)}
+          type="button"
+          className={` ${
+            state
+              ? "bg-lime-600 hover:bg-lime-800"
+              : "bg-gray-500 hover:bg-gray-700"
+          } flex items-center justify-between delay-100 w-full cursor-pointer transition-all  p-2 rounded-full text-white  `}
+        >
+          <p className="hidden md:flex">{state ? "Complete" : "Incomplete"}</p>
+          {state ? (
+            <BsCheck className="text-white text-xl" />
+          ) : (
+            <GrFormClose className="text-white text-xl" />
+          )}
+        </button>
       </div>
     </div>
   );

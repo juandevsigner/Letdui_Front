@@ -21,7 +21,10 @@ const ProjectsProvider = ({ children }: Provider) => {
   const [error, setError] = useState<boolean>(true);
   const [modal, setModal] = useState<boolean>(false);
   const [modalDeleteTask, setModalDeleteTask] = useState<boolean>(false);
+  const [modalDeleteCollaborator, setModalDeleteCollaborator] =
+    useState<boolean>(false);
   const [collaborator, setCollaborator] = useState<any>({});
+  const [search, setSearch] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -137,6 +140,7 @@ const ProjectsProvider = ({ children }: Provider) => {
       const { data } = await axiosClient(`/projects/${id}`, config);
       setProject(data);
     } catch (error) {
+      navigate("/projects");
       console.log(error);
     }
     setLoad(false);
@@ -252,7 +256,7 @@ const ProjectsProvider = ({ children }: Provider) => {
   };
 
   const deleteTask = async () => {
-    console.log(task);
+    console.log(task.id);
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -264,7 +268,7 @@ const ProjectsProvider = ({ children }: Provider) => {
         },
       };
       //TODO: pendiente por revisar, pq no actualiza el state
-      const { data } = await axios(`/task/${task.id}`, config);
+      const { data } = await axiosClient.delete(`/task/${task.id}`, config);
       console.log(data);
 
       setModalDeleteTask(!modalDeleteTask);
@@ -356,6 +360,80 @@ const ProjectsProvider = ({ children }: Provider) => {
     }
   };
 
+  const handleDeleteCollaborator = (collaborator: CollaboratorInt) => {
+    setModalDeleteCollaborator(!modalDeleteCollaborator);
+    setCollaborator(collaborator);
+  };
+
+  const deleteCollaborator = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      if (!token) return;
+
+      const config: any = {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axiosClient.post(
+        `/projects/delete-collaborator/${project._id}`,
+        { id: collaborator._id },
+        config
+      );
+
+      const projectUpdate = { ...project };
+      projectUpdate.collaborators = projectUpdate.collaborators.filter(
+        (collaboratorState: any) => collaboratorState._id !== collaborator._id
+      );
+
+      setProject(projectUpdate);
+
+      setMsg(data.msg);
+      setError(false);
+      setTimeout(() => {
+        setMsg("");
+        setError(true);
+      }, 3000);
+      setCollaborator({});
+      setModalDeleteCollaborator(false);
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+  const completeTask = async (id: string) => {
+    const token = localStorage.getItem("token");
+    try {
+      if (!token) return;
+
+      const config: any = {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axiosClient.post(`/task/state/${id}`, {}, config);
+      const projectUpdate = { ...project };
+      projectUpdate.tasks = projectUpdate.tasks.map((taksState: any) =>
+        taksState._id === data._id ? data : taksState
+      );
+
+      setProject(projectUpdate);
+      setTask({});
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSearch = () => {
+    setSearch(!search);
+  };
+
   return (
     <ProjectsContext.Provider
       value={{
@@ -387,6 +465,14 @@ const ProjectsProvider = ({ children }: Provider) => {
         addCollaborator,
         collaborator,
         setCollaborator,
+        modalDeleteCollaborator,
+        setModalDeleteCollaborator,
+        handleDeleteCollaborator,
+        deleteCollaborator,
+        completeTask,
+        search,
+        setSearch,
+        handleSearch,
       }}
     >
       {children}

@@ -17,11 +17,13 @@ export interface Project {
   client: string;
   deliveryDate: string;
   //TODO: tipar las funciones
-  map?: () => void | undefined;
+  map?: any;
   length?: () => void | undefined;
   find?: () => void | undefined;
   tasks: Task;
   collaborators: Collaborator;
+  creator?: string;
+  filter?: any;
 }
 
 export interface Collaborator {
@@ -41,15 +43,16 @@ export interface Task {
   description: string;
   priority: string;
   date: string | undefined;
-  id?: string | undefined;
+  id?: any;
   project?: string;
   state?: boolean;
+  completed: any;
 }
 
 export interface CollaboratorInt {
   email: string;
   name: string;
-  _id: string;
+  _id?: any;
 }
 export interface ValuePropsProjects {
   projects: Project;
@@ -61,11 +64,15 @@ export interface ValuePropsProjects {
   submitProject: (project: Project) => Promise<void>;
   getProject: (id: any) => Promise<void>;
   deleteProject: (id: string) => Promise<void>;
+  completeTask: (id: string) => Promise<void>;
   deleteTask: () => Promise<void>;
   submitTask: (task: Task) => Promise<void>;
   handleEditTask: (task: Task) => Promise<void>;
   submitCollaborator: (email: string) => Promise<void>;
   addCollaborator: (email: object) => Promise<void>;
+  handleDeleteCollaborator: (collaborator: CollaboratorInt) => any;
+  deleteCollaborator: () => Promise<void>;
+  handleSearch: () => void;
   handleModalDeleteTask: (task: any) => any;
   handleModalTask: () => any;
   msg: string;
@@ -78,6 +85,10 @@ export interface ValuePropsProjects {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
   modalDeleteTask: boolean;
   setModalDeleteTask: React.Dispatch<React.SetStateAction<boolean>>;
+  modalDeleteCollaborator: boolean;
+  setModalDeleteCollaborator: React.Dispatch<React.SetStateAction<boolean>>;
+  search: boolean;
+  setSearch: React.Dispatch<React.SetStateAction<boolean>>;
   collaborator: CollaboratorInt;
   setCollaborator: React.Dispatch<React.SetStateAction<CollaboratorInt>>;
 }

@@ -3,14 +3,18 @@ import { Dialog, Transition } from "@headlessui/react";
 import { CgDanger } from "react-icons/cg";
 import { useProjects } from "../../hooks";
 
-const ModalDeleteTask = () => {
-  const { modalDeleteTask, handleModalDeleteTask, deleteTask } = useProjects();
+export const ModalDeleteCollaborator = () => {
+  const {
+    modalDeleteCollaborator,
+    setModalDeleteCollaborator,
+    deleteCollaborator,
+  } = useProjects();
   return (
-    <Transition.Root show={modalDeleteTask} as={Fragment}>
+    <Transition.Root show={modalDeleteCollaborator} as={Fragment}>
       <Dialog
         as="div"
         className="fixed z-10 inset-0 overflow-y-auto"
-        onClose={handleModalDeleteTask}
+        onClose={() => setModalDeleteCollaborator(false)}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -47,7 +51,7 @@ const ModalDeleteTask = () => {
                 <button
                   type="button"
                   className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  onClick={handleModalDeleteTask}
+                  onClick={() => setModalDeleteCollaborator(false)}
                 >
                   <span className="sr-only">Cerrar</span>
                   <svg
@@ -71,29 +75,29 @@ const ModalDeleteTask = () => {
                     as="h3"
                     className="text-lg leading-6 font-bold text-gray-900"
                   >
-                    Delete Task
+                    Delete Collaborator
                   </Dialog.Title>
 
                   <div className="mt-2 flex items-center gap-2">
                     <CgDanger className="text-red-500" />
                     <p className="text-red-700">
-                      A deleted task cannot be recovered
+                      Are you sure you want to eliminate the collaborator?
                     </p>
                   </div>
                   <div className="flex items-center mt-5 gap-3">
                     <button
                       className=" p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors delay-75"
                       type="button"
-                      onClick={handleModalDeleteTask}
+                      onClick={() => setModalDeleteCollaborator(false)}
                     >
                       Cancel
                     </button>
                     <button
                       className="bg-red-500  text-white rounded-full hover:bg-red-800 transition-colors delay-75 p-2"
                       type="button"
-                      onClick={deleteTask}
+                      onClick={deleteCollaborator}
                     >
-                      Delete Task
+                      Delete Collaborator
                     </button>
                   </div>
                 </div>
@@ -105,5 +109,3 @@ const ModalDeleteTask = () => {
     </Transition.Root>
   );
 };
-
-export default ModalDeleteTask;

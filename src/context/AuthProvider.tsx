@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Provider, ValueProps } from "./interfacesContext";
 import axiosClient from "../config/axiosClient";
 
@@ -9,6 +9,7 @@ const AuthProvider = ({ children }: Provider) => {
   const [auth, setAuth] = useState<any>();
   const [load, setLoad] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const authUser = async () => {
@@ -27,7 +28,9 @@ const AuthProvider = ({ children }: Provider) => {
       try {
         const { data } = await axiosClient("/users/profile", config);
         setAuth(data);
-        navigate("/projects");
+        if (data._id && location.pathname === "/") {
+          navigate("/projects");
+        }
       } catch (error) {
         setAuth({});
       }

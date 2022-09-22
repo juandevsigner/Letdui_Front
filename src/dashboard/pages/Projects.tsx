@@ -18,8 +18,14 @@ export const Projects = () => {
             <p className="text-indigo-600 font-semibold text-center text-2xl capitalize">
               Projects List
             </p>
-            {projects.map(({ name, client, _id }: Project) => (
-              <PreviewProject key={_id} name={name} client={client} _id={_id} />
+            {projects.map(({ name, client, _id, creator }: any) => (
+              <PreviewProject
+                key={_id}
+                name={name}
+                client={client}
+                _id={_id}
+                creator={creator}
+              />
             ))}
           </div>
         ) : (

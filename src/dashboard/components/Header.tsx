@@ -1,17 +1,18 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { IoMdExit } from "react-icons/io";
+import { useProjects } from "../../hooks";
+import Logo from "../../assets/letduiLogo.svg";
+import { Search } from "./Search";
 
 export const Header = () => {
+  const { handleSearch } = useProjects();
   return (
     <header className="px-4 py-5  shadow-sm">
       <div className="flex justify-between md:items-center">
-        <h2 className="text-xl text-indigo-600 font-semibold ">Letdui APP</h2>
-        <input
-          type="seacrh"
-          placeholder="Find a project"
-          className="rounded-full p-2 lg:w-96 block border border-indigo-200"
-        />
+        <img className="w-32" src={Logo} alt="letdui-app" />
+        <button onClick={handleSearch} type="button" className="font-semibold">
+          Search Project
+        </button>
         <div className="flex items-center gap-4">
           <Link
             className="font-semibold  text-indigo-500 hover:text-indigo-800 transition-colors"
@@ -23,6 +24,7 @@ export const Header = () => {
             Logout
             <IoMdExit className="text-xl" />
           </button>
+          <Search />
         </div>
       </div>
     </header>
