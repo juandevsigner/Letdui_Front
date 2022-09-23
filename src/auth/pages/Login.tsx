@@ -43,8 +43,9 @@ export const Login = () => {
   return (
     <div>
       <h1 className="text-indigo-700 text-2xl capitalize text-center">
-        Admin <span className="font-semibold">your projects</span>
+        Weolcome to <span className="font-semibold">Letdui</span>
       </h1>
+      <p>Admin your projects</p>
       <form className=" bg-white p-10 rounded-lg">
         {msg.length !== 0 && <Alert error={error} msg={msg} />}
         <input
