@@ -1,11 +1,18 @@
 import { Link } from "react-router-dom";
 import { IoMdExit } from "react-icons/io";
 import { useProjects } from "../../hooks";
+import { useAuth } from "../../hooks";
 import Logo from "../../assets/letduiLogo.svg";
 import { Search } from "./Search";
 
 export const Header = () => {
-  const { handleSearch } = useProjects();
+  const { handleSearch, logoutProjects } = useProjects();
+  const { LogoutAuth } = useAuth();
+  const handleLogout = () => {
+    LogoutAuth();
+    logoutProjects();
+    localStorage.removeItem("token");
+  };
   return (
     <header className="px-4 py-5  shadow-sm">
       <div className="flex justify-between md:items-center">
@@ -20,7 +27,10 @@ export const Header = () => {
           >
             Projects
           </Link>
-          <button className="rounded-full  hover:bg-gray-400 hover:text-gray-100 p-2 flex items-center gap-2 transition-colors delay-75">
+          <button
+            onClick={handleLogout}
+            className="rounded-full  hover:bg-gray-400 hover:text-gray-100 p-2 flex items-center gap-2 transition-colors delay-75"
+          >
             Logout
             <IoMdExit className="text-xl" />
           </button>

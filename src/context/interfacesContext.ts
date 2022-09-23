@@ -2,11 +2,12 @@ export interface Provider {
   children: JSX.Element | JSX.Element[];
 }
 
-export interface ValueProps {
+export interface ValuePropsAuth {
   load: boolean;
   setLoad: React.Dispatch<React.SetStateAction<boolean>>;
   auth: any;
   setAuth: React.Dispatch<React.SetStateAction<any>>;
+  LogoutAuth: () => void;
 }
 
 export interface Project {
@@ -70,11 +71,16 @@ export interface ValuePropsProjects {
   handleEditTask: (task: Task) => Promise<void>;
   submitCollaborator: (email: string) => Promise<void>;
   addCollaborator: (email: object) => Promise<void>;
-  handleDeleteCollaborator: (collaborator: CollaboratorInt) => any;
+  handleDeleteCollaborator: (collaborator: CollaboratorInt) => void;
   deleteCollaborator: () => Promise<void>;
   handleSearch: () => void;
+  logoutProjects: () => void;
+  submitTaskProject: (task: any) => void;
+  deleteTaskProject: (task: any) => void;
+  editTaskProject: (task: any) => void;
+  newStateProject: (task: any) => void;
   handleModalDeleteTask: (task: any) => any;
-  handleModalTask: () => any;
+  handleModalTask: () => void;
   msg: string;
   setMsg: React.Dispatch<React.SetStateAction<string>>;
   error: boolean;

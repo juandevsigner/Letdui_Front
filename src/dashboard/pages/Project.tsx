@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import io from "socket.io-client";
 import { FiEdit } from "react-icons/fi";
 import { FaRegSadCry } from "react-icons/fa";
 import { BsPlus } from "react-icons/bs";
@@ -18,16 +19,65 @@ import {
 } from "../../context/interfacesContext";
 import ModalDeleteTask from "../components/ModalDeleteTask";
 
+let socket: any;
+
 export const Project = () => {
   const params = useParams();
 
-  const { project, getProject, load, handleModalTask, error, msg } =
-    useProjects();
+  const {
+    project,
+    getProject,
+    load,
+    handleModalTask,
+    error,
+    msg,
+    submitTaskProject,
+    deleteTaskProject,
+    editTaskProject,
+    newStateProject,
+  } = useProjects();
 
   const admin = useAdmin();
   useEffect(() => {
     getProject(params.id);
   }, []);
+
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL);
+    socket.emit("open project", params.id);
+  }, []);
+
+  useEffect(() => {
+    socket.on("task add", (task: any) => {
+      if (task.project === project._id) {
+        submitTaskProject(task);
+      }
+    });
+    socket.on("task deleted", (task: any) => {
+      if (task.project === project._id) {
+        deleteTaskProject(task);
+      }
+    });
+
+    socket.on("up task", (task: any) => {
+      if (task.project._id === project._id) {
+        editTaskProject(task);
+      }
+    });
+
+    socket.on("new state", (task: any) => {
+      if (task.project._id === project._id) {
+        newStateProject(task);
+      }
+    });
+
+    return () => {
+      socket.off("tarea agregada");
+      socket.off("tarea eliminada");
+      socket.off("tarea actualizada");
+      socket.off("tarea estado");
+    };
+  });
 
   if (load) return <Spinner />;
 

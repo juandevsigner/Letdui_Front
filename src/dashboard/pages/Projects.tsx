@@ -1,12 +1,22 @@
-import React from "react";
+import { useEffect } from "react";
 import { useProjects } from "../../hooks/useProjects";
 import { FaUserAstronaut } from "react-icons/fa";
-import { Project } from "../../context/interfacesContext";
 import { PreviewProject } from "../components";
 import { Spinner } from "../../ui";
+import io from "socket.io-client";
+
+let socket;
 
 export const Projects = () => {
   const { projects, load } = useProjects();
+
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL);
+    socket.emit("prueba");
+    socket.on("respuesta", persona => {
+      console.log("desde frontend", persona);
+    });
+  });
 
   if (load) return <Spinner />;
 

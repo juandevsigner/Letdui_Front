@@ -1,9 +1,9 @@
 import { useState, useEffect, createContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Provider, ValueProps } from "./interfacesContext";
+import { Provider, ValuePropsAuth } from "./interfacesContext";
 import axiosClient from "../config/axiosClient";
 
-const AuthContext = createContext({} as ValueProps);
+const AuthContext = createContext({} as ValuePropsAuth);
 
 const AuthProvider = ({ children }: Provider) => {
   const [auth, setAuth] = useState<any>();
@@ -39,6 +39,10 @@ const AuthProvider = ({ children }: Provider) => {
     authUser();
   }, []);
 
+  const LogoutAuth = () => {
+    setAuth({});
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -46,6 +50,7 @@ const AuthProvider = ({ children }: Provider) => {
         setAuth,
         load,
         setLoad,
+        LogoutAuth,
       }}
     >
       {children}

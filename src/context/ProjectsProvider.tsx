@@ -1,7 +1,8 @@
-import axios from "axios";
 import { useState, useEffect, createContext, Children } from "react";
 import { useNavigate } from "react-router-dom";
+import io from "socket.io-client";
 import axiosClient from "../config/axiosClient";
+import { useAuth } from "../hooks/useAuth";
 import {
   Provider,
   ValuePropsProjects,
@@ -9,6 +10,8 @@ import {
   Task,
   CollaboratorInt,
 } from "./interfacesContext";
+
+let socket: any;
 
 const ProjectsContext = createContext({} as ValuePropsProjects);
 
@@ -27,6 +30,8 @@ const ProjectsProvider = ({ children }: Provider) => {
   const [search, setSearch] = useState<boolean>(false);
 
   const navigate = useNavigate();
+
+  const { auth } = useAuth();
 
   useEffect(() => {
     const getProjects = async () => {
@@ -47,6 +52,10 @@ const ProjectsProvider = ({ children }: Provider) => {
       }
     };
     getProjects();
+  }, [auth]);
+
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL);
   }, []);
 
   const submitProject = async (project: Project) => {
@@ -200,10 +209,10 @@ const ProjectsProvider = ({ children }: Provider) => {
       };
 
       const { data } = await axiosClient.post("/task", task, config);
-      const projectUpdate = { ...project };
-      projectUpdate.tasks = [...project.tasks, data];
-      setProject(projectUpdate);
+
       setModal(false);
+      //SOCKET
+      socket.emit("new task", data);
     } catch (error) {
       console.log(error);
     }
@@ -225,11 +234,8 @@ const ProjectsProvider = ({ children }: Provider) => {
       console.log(data);
       setModal(!modal);
 
-      const projectUpdate = { ...project };
-      projectUpdate.task = projectUpdate.task.map((taskState: Task) =>
-        taskState._id === data._id ? data : taskState
-      );
-      setProject(projectUpdate);
+      //SOCKETS
+      socket.emit("update task", data);
     } catch (error) {
       console.log(error);
     }
@@ -256,7 +262,6 @@ const ProjectsProvider = ({ children }: Provider) => {
   };
 
   const deleteTask = async () => {
-    console.log(task.id);
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -269,23 +274,19 @@ const ProjectsProvider = ({ children }: Provider) => {
       };
       //TODO: pendiente por revisar, pq no actualiza el state
       const { data } = await axiosClient.delete(`/task/${task.id}`, config);
-      console.log(data);
-
       setModalDeleteTask(!modalDeleteTask);
       setMsg("Task has been delete correctly");
+
+      //SOCKET
+      socket.emit("remove task", task);
+      //
+
+      setTask({});
       setError(false);
       setTimeout(() => {
         setMsg("");
         setError(true);
       }, 3000);
-
-      /*  const projectUpdate = { ...project };
-      projectUpdate.tasks = projectUpdate.tasks.filter(
-        (taskState: Task) => taskState.id !== task.id
-      );
-      setProject(projectUpdate); */
-
-      setTask({});
     } catch (error) {
       console.log(error);
     }
@@ -411,20 +412,16 @@ const ProjectsProvider = ({ children }: Provider) => {
 
       const config: any = {
         headers: {
-          "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       };
 
       const { data } = await axiosClient.post(`/task/state/${id}`, {}, config);
-      const projectUpdate = { ...project };
-      projectUpdate.tasks = projectUpdate.tasks.map((taksState: any) =>
-        taksState._id === data._id ? data : taksState
-      );
-
-      setProject(projectUpdate);
       setTask({});
+
+      //SOCKETS
+      socket.emit("change state", data);
     } catch (error) {
       console.log(error);
     }
@@ -432,6 +429,44 @@ const ProjectsProvider = ({ children }: Provider) => {
 
   const handleSearch = () => {
     setSearch(!search);
+  };
+
+  //Sockets Functions
+  const submitTaskProject = (task: any) => {
+    const projectUpdate = { ...project };
+    projectUpdate.tasks = [...projectUpdate.tasks, task];
+    setProject(projectUpdate);
+  };
+
+  const deleteTaskProject = (task: any) => {
+    const projectUpdate = { ...project };
+    projectUpdate.tasks = projectUpdate.tasks.filter(
+      (taskState: any) => taskState._id !== task._id
+    );
+    console.log(projectUpdate);
+    console.log(task);
+    setProject(projectUpdate);
+  };
+
+  const editTaskProject = (task: any) => {
+    const projectUpdate = { ...project };
+    projectUpdate.task = projectUpdate.task.map((taskState: Task) =>
+      taskState._id === task._id ? task : taskState
+    );
+    setProject(projectUpdate);
+  };
+
+  const newStateProject = (task: any) => {
+    const projectUpdate = { ...project };
+    projectUpdate.tasks = projectUpdate.tasks.map((taksState: any) =>
+      taksState._id === task._id ? task : taksState
+    );
+    setProject(projectUpdate);
+  };
+
+  const logoutProjects = () => {
+    setProjects([]);
+    setProject({});
   };
 
   return (
@@ -473,6 +508,11 @@ const ProjectsProvider = ({ children }: Provider) => {
         search,
         setSearch,
         handleSearch,
+        submitTaskProject,
+        deleteTaskProject,
+        editTaskProject,
+        newStateProject,
+        logoutProjects,
       }}
     >
       {children}

@@ -58,7 +58,7 @@ export const Task = ({
         {state && (
           <p className="text-xs text-green-500">
             Completed by:{" "}
-            <span className="font-semibold capitalize ">{completed.name}</span>
+            <span className="font-semibold capitalize ">{completed?.name}</span>
           </p>
         )}
       </div>
