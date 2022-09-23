@@ -58,7 +58,7 @@ const ProjectsProvider = ({ children }: Provider) => {
     socket = io(import.meta.env.VITE_BACKEND_URL);
   }, []);
 
-  const submitProject = async (project: Project) => {
+  const submitProject = async (project: any) => {
     if (project.id) {
       await editProject(project);
     } else {

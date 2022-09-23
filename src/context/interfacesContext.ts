@@ -21,8 +21,8 @@ export interface Project {
   map?: any;
   length?: () => void | undefined;
   find?: () => void | undefined;
-  tasks: Task;
-  collaborators: Collaborator;
+  tasks?: Task;
+  collaborators?: Collaborator;
   creator?: string;
   filter?: any;
 }
@@ -47,7 +47,7 @@ export interface Task {
   id?: any;
   project?: string;
   state?: boolean;
-  completed: any;
+  completed?: any;
 }
 
 export interface CollaboratorInt {
