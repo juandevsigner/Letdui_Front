@@ -4,6 +4,7 @@ export * from "./FormProject";
 export * from "./PreviewProject";
 export * from "./ModalTask";
 export * from "./ModalDeleteTask";
+export * from "./ModalDeleteProject";
 export * from "./ModalDeleteCollaborator";
 export * from "./FormTask";
 export * from "./Task";

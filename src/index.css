@@ -54,3 +54,21 @@ body {
     transform: translateX(90%);
   }
 }
+
+/*----CUSTOM CSS-----*/
+.btn-primary {
+  @apply bg-indigo-700 w-full cursor-pointer transition-colors hover:bg-indigo-900 text-white px-10 py-2 rounded-full mt-10;
+}
+
+.input {
+  @apply p-2 border-b w-full border-indigo-300 mt-5 bg-transparent;
+}
+
+.bar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.bar::-webkit-scrollbar-thumb {
+  background-color: #2d5f9b;
+  border-radius: 10px;
+}

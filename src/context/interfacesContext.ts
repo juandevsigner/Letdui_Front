@@ -80,6 +80,7 @@ export interface ValuePropsProjects {
   editTaskProject: (task: any) => void;
   newStateProject: (task: any) => void;
   handleModalDeleteTask: (task: any) => any;
+  handleModalDeleteProject: () => void;
   handleModalTask: () => void;
   msg: string;
   setMsg: React.Dispatch<React.SetStateAction<string>>;
@@ -91,10 +92,14 @@ export interface ValuePropsProjects {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
   modalDeleteTask: boolean;
   setModalDeleteTask: React.Dispatch<React.SetStateAction<boolean>>;
+  modalDeleteProject: boolean;
+  setModalDeleteProject: React.Dispatch<React.SetStateAction<boolean>>;
   modalDeleteCollaborator: boolean;
   setModalDeleteCollaborator: React.Dispatch<React.SetStateAction<boolean>>;
   search: boolean;
   setSearch: React.Dispatch<React.SetStateAction<boolean>>;
+  sidebar: boolean;
+  setSidebar: React.Dispatch<React.SetStateAction<boolean>>;
   collaborator: CollaboratorInt;
   setCollaborator: React.Dispatch<React.SetStateAction<CollaboratorInt>>;
 }

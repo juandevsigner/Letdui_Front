@@ -14,6 +14,9 @@ module.exports = {
         yellowbg: "#EBD15B",
       },
     },
+    backgroundImage: {
+      "auth-background": "url('/assets/background.svg')",
+    },
   },
   plugins: [],
 };

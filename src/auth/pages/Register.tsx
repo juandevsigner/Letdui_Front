@@ -2,6 +2,7 @@ import { useState, FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { Alert } from "../../ui/Alert";
 import axiosClient from "../../config/axiosClient";
+import { Heading } from "../components";
 
 export const Register = () => {
   const [name, setName] = useState<string>("");
@@ -62,34 +63,36 @@ export const Register = () => {
 
   return (
     <div>
-      <h1 className="text-indigo-700 text-2xl capitalize text-center">
-        Create <span className="font-semibold">an account</span>
-      </h1>
-      {msg.length !== 0 && <Alert error={error} msg={msg} />}
-      <form className="my-5 bg-white p-10 rounded-lg">
+      <Heading />
+
+      <form className="my-5  p-10 rounded-lg">
+        {msg.length !== 0 && <Alert error={error} msg={msg} />}
+        <h1 className="text-indigo-700 text-2xl capitalize text-center">
+          Create <span className="font-semibold">an account</span>
+        </h1>
         <input
-          className="capitalize p-2 border-b w-full border-indigo-300 mt-5"
+          className="input"
           placeholder="Enter Your Name"
           type="text"
           value={name}
           onChange={e => setName(e.target.value)}
         />
         <input
-          className=" p-2 border-b w-full border-indigo-300 mt-5"
+          className="input"
           placeholder="Enter Your Email"
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
         />
         <input
-          className=" p-2 border-b w-full border-indigo-300 mt-5"
+          className="input"
           placeholder="Create Password"
           type="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
         <input
-          className=" p-2 border-b w-full border-indigo-300 mt-5"
+          className="input"
           placeholder="Repeat Password"
           type="password"
           value={passwordRepeat}
@@ -97,7 +100,7 @@ export const Register = () => {
         />
         <div>
           <input
-            className="bg-indigo-700 w-full cursor-pointer transition-colors hover:bg-indigo-900 text-white px-10 py-2 rounded-lg mt-5"
+            className="btn-primary"
             type="submit"
             value="Create Account"
             onClick={handleSubmit}

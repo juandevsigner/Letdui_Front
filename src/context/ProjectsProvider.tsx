@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext, Children } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import io from "socket.io-client";
 import axiosClient from "../config/axiosClient";
 import { useAuth } from "../hooks/useAuth";
@@ -24,10 +24,12 @@ const ProjectsProvider = ({ children }: Provider) => {
   const [error, setError] = useState<boolean>(true);
   const [modal, setModal] = useState<boolean>(false);
   const [modalDeleteTask, setModalDeleteTask] = useState<boolean>(false);
+  const [modalDeleteProject, setModalDeleteProject] = useState<boolean>(false);
   const [modalDeleteCollaborator, setModalDeleteCollaborator] =
     useState<boolean>(false);
   const [collaborator, setCollaborator] = useState<any>({});
   const [search, setSearch] = useState<boolean>(false);
+  const [sidebar, setSidebar] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -126,7 +128,7 @@ const ProjectsProvider = ({ children }: Provider) => {
         setError(true);
       }, 3000);
       setTimeout(() => {
-        navigate("/projects");
+        window.location.href = "/projects";
       }, 2000);
     } catch (error) {
       console.log(error);
@@ -154,6 +156,9 @@ const ProjectsProvider = ({ children }: Provider) => {
     }
     setLoad(false);
   };
+  const handleModalDeleteProject = () => {
+    setModalDeleteProject(!modalDeleteProject);
+  };
 
   const deleteProject = async (id: string) => {
     try {
@@ -171,6 +176,8 @@ const ProjectsProvider = ({ children }: Provider) => {
       const projectsUpdate = projects.filter(
         (projectState: Project) => projectState._id !== id
       );
+
+      handleModalDeleteProject();
 
       setProjects(projectsUpdate);
 
@@ -233,6 +240,7 @@ const ProjectsProvider = ({ children }: Provider) => {
       const { data } = await axiosClient.put(`/task/${task.id}`, task, config);
       console.log(data);
       setModal(!modal);
+      window.location.reload();
 
       //SOCKETS
       socket.emit("update task", data);
@@ -280,7 +288,7 @@ const ProjectsProvider = ({ children }: Provider) => {
       //SOCKET
       socket.emit("remove task", task);
       //
-
+      window.location.reload();
       setTask({});
       setError(false);
       setTimeout(() => {
@@ -327,6 +335,7 @@ const ProjectsProvider = ({ children }: Provider) => {
 
   const addCollaborator = async (email: object) => {
     const token = localStorage.getItem("token");
+    console.log(project._id);
     try {
       if (!token) return;
 
@@ -347,6 +356,7 @@ const ProjectsProvider = ({ children }: Provider) => {
       setCollaborator({});
       setMsg(data.msg);
       setError(false);
+      window.location.href = `/projects/${project._id}`;
       setTimeout(() => {
         setMsg("");
         setError(true);
@@ -454,6 +464,7 @@ const ProjectsProvider = ({ children }: Provider) => {
       taskState._id === task._id ? task : taskState
     );
     setProject(projectUpdate);
+    window.location.reload();
   };
 
   const newStateProject = (task: any) => {
@@ -513,6 +524,11 @@ const ProjectsProvider = ({ children }: Provider) => {
         editTaskProject,
         newStateProject,
         logoutProjects,
+        sidebar,
+        setSidebar,
+        modalDeleteProject,
+        setModalDeleteProject,
+        handleModalDeleteProject,
       }}
     >
       {children}

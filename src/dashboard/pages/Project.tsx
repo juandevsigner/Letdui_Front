@@ -5,6 +5,7 @@ import { FiEdit } from "react-icons/fi";
 import { FaRegSadCry } from "react-icons/fa";
 import { BsPlus } from "react-icons/bs";
 import { HiOutlineChevronRight } from "react-icons/hi";
+import { MdPersonAddAlt1, MdOutlineTask } from "react-icons/md";
 import { useProjects, useAdmin } from "../../hooks";
 import { Alert, Spinner } from "../../ui";
 import {
@@ -82,12 +83,12 @@ export const Project = () => {
   if (load) return <Spinner />;
 
   return (
-    <div className="h-screen">
+    <div className=" p-5">
       {msg.length !== 0 && <Alert error={error} msg={msg} />}
-      <div className="flex justify-between items-center mb-5">
+      <div className="flex justify-between items-center my-2">
         <div className="flex items-center">
           <HiOutlineChevronRight />
-          <h1 className=" md:text-xl text-gray-500">
+          <h1 className="text-sm md:text-xl text-gray-500">
             {project?.name} | {project?.client}
           </h1>
         </div>
@@ -96,29 +97,32 @@ export const Project = () => {
             className="flex items-center gap-3 bg-indigo-600 py-2 px-5 rounded-full hover:bg-indigo-900 transition-colors delay-75 text-white"
             to={`/projects/edit/${params.id}`}
           >
-            Edit
+            <p className="hidden md:inline">Edit</p>
+
             <FiEdit className="text-xl" />
           </Link>
         )}
       </div>
-      <div className="bg-white p-2  rounded-lg shadow-sm">
+      <p className="text-xl font-semibold text-indigo-600 text-center mb-2">
+        Task List
+      </p>
+      <div className="overflow-x-scroll w-full bar">
         {project?.tasks?.length ? (
           <div className="flex flex-col">
-            <p className="text-xl font-semibold text-indigo-600 text-center mb-5">
-              Task List
-            </p>
-            {project?.tasks.map((task: TaskInterface) => (
-              <Task
-                key={task._id}
-                name={task.name}
-                date={task.deliveryDate}
-                id={task._id}
-                description={task.description}
-                priority={task.priority}
-                state={task.state}
-                completed={task.completed}
-              />
-            ))}
+            <div className="flex gap-2">
+              {project?.tasks.map((task: TaskInterface) => (
+                <Task
+                  key={task._id}
+                  name={task.name}
+                  date={task.deliveryDate}
+                  id={task._id}
+                  description={task.description}
+                  priority={task.priority}
+                  state={task.state}
+                  completed={task.completed}
+                />
+              ))}
+            </div>
           </div>
         ) : (
           <div className="flex flex-col justify-center items-center">
@@ -138,38 +142,45 @@ export const Project = () => {
               type="button"
               onClick={handleModalTask}
             >
-              <p>Create Task</p>
-              <BsPlus className="text-2xl" />
+              <p className="hidden md:inline">Create Task</p>
+              <BsPlus className="text-2xl hidden md:inline" />
+              <MdOutlineTask className="inline md:hidden text-2xl" />
             </button>
           </div>
-          <div className="flex items-center justify-between mt-5">
-            <p>Collaborators</p>
+          <div className="fixed  right-28 md:right-52 bottom-6">
             <Link
-              className=" delay-100 transition-all px-5 py-3 rounded-full text-white bg-orange-600 hover:bg-orange-800  gap-1 hover:gap-2"
+              className=" flex items-center delay-100 transition-all px-5 py-3 rounded-full text-white bg-orange-600 hover:bg-orange-800  gap-1 hover:gap-2"
               to={`/projects/new-collaborator/${project._id}`}
             >
-              Add
+              <p className="hidden md:inline">Add Collaborator</p>
+
+              <BsPlus className="text-2xl hidden md:inline" />
+              <MdPersonAddAlt1 className="inline md:hidden text-2xl" />
             </Link>
           </div>
         </>
       )}
       {admin && (
-        <>
+        <div className="overflow-x-scroll w-full bar">
           {project?.collaborators?.length ? (
-            <div className="bg-white shadow-sm rounded-lg mt-5 ">
-              {project.collaborators?.map((collaborator: CollaboratorInt) => (
-                <Collaborator
-                  key={collaborator._id}
-                  collaborator={collaborator}
-                />
-              ))}
-            </div>
+            <>
+              <p className="text-center mt-3">Collaborators</p>
+
+              <div className="flex gap-2 shadow-sm rounded-lg mt-2">
+                {project.collaborators?.map((collaborator: CollaboratorInt) => (
+                  <Collaborator
+                    key={collaborator._id}
+                    collaborator={collaborator}
+                  />
+                ))}
+              </div>
+            </>
           ) : (
-            <p>
+            <p className="text-center">
               No collaborators yet - Add a Collaborator - click on button "Add"
             </p>
           )}
-        </>
+        </div>
       )}
 
       <ModalTask />

@@ -1,19 +1,19 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { CgDanger } from "react-icons/cg";
 import { useProjects } from "../../hooks";
-import { FormTask } from "./FormTask";
 
-export const ModalTask = () => {
-  const { modal, handleModalTask } = useProjects();
-
+export const ModalDeleteProject = (id: any) => {
+  const { modalDeleteProject, handleModalDeleteProject, deleteProject } =
+    useProjects();
   return (
-    <Transition.Root show={modal} as={Fragment}>
+    <Transition.Root show={modalDeleteProject} as={Fragment}>
       <Dialog
         as="div"
         className="fixed z-10 inset-0 overflow-y-auto"
-        onClose={handleModalTask}
+        onClose={handleModalDeleteProject}
       >
-        <div className="flex items-center justify-center h-screen  pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div className="flex items-center justify-center h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -48,9 +48,9 @@ export const ModalTask = () => {
                 <button
                   type="button"
                   className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  onClick={handleModalTask}
+                  onClick={handleModalDeleteProject}
                 >
-                  <span className="sr-only">Close</span>
+                  <span className="sr-only">Cerrar</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6"
@@ -68,7 +68,35 @@ export const ModalTask = () => {
 
               <div className="sm:flex sm:items-start">
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                  <FormTask />
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg leading-6 font-bold text-gray-900"
+                  >
+                    Delete Project
+                  </Dialog.Title>
+
+                  <div className="mt-2 flex items-center gap-2">
+                    <CgDanger className="text-red-500" />
+                    <p className="text-red-700">
+                      A deleted project cannot be recovered
+                    </p>
+                  </div>
+                  <div className="flex items-center mt-5 gap-3">
+                    <button
+                      className=" p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors delay-75"
+                      type="button"
+                      onClick={() => deleteProject(id)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="bg-red-500  text-white rounded-full hover:bg-red-800 transition-colors delay-75 p-2"
+                      type="button"
+                      onClick={() => deleteProject(id.id)}
+                    >
+                      Delete Project
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

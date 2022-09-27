@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { IoMdExit } from "react-icons/io";
+import { BiSearch } from "react-icons/bi";
 import { useProjects } from "../../hooks";
 import { useAuth } from "../../hooks";
 import Logo from "../../assets/letduiLogo.svg";
@@ -14,24 +15,28 @@ export const Header = () => {
     localStorage.removeItem("token");
   };
   return (
-    <header className="px-4 py-5  shadow-sm">
+    <header className="px-4 py-2 bg-white  shadow-sm">
       <div className="flex justify-between md:items-center">
-        <img className="w-32" src={Logo} alt="letdui-app" />
-        <button onClick={handleSearch} type="button" className="font-semibold">
-          Search Project
-        </button>
+        <Link to={"/projects"}>
+          <img className="w-32" src={Logo} alt="letdui-app" />
+        </Link>
+
         <div className="flex items-center gap-4">
-          <Link
-            className="font-semibold  text-indigo-500 hover:text-indigo-800 transition-colors"
-            to="/projects"
+          <button
+            onClick={handleSearch}
+            type="button"
+            className="border border-gray-300 rounded-full py-2 px-5 flex items-center justify-between gap-3"
           >
-            Projects
-          </Link>
+            <p className="hidden md:block">Search Project</p>
+
+            <BiSearch className="text-xl" />
+          </button>
           <button
             onClick={handleLogout}
             className="rounded-full  hover:bg-gray-400 hover:text-gray-100 p-2 flex items-center gap-2 transition-colors delay-75"
           >
-            Logout
+            <p className="hidden md:block">Logout</p>
+
             <IoMdExit className="text-xl" />
           </button>
           <Search />

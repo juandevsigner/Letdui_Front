@@ -42,24 +42,24 @@ export const FormProject = () => {
   };
 
   return (
-    <form className="py-10 bg-white shadow-sm rounded-xl px-5 md:w-1/2">
+    <form className="py-10 bg-white shadow-sm rounded-xl px-5 md:w-2/4 lg:w-2/4 xl:w-1/4">
       {msg?.length !== 0 && <Alert error={error} msg={msg} />}
       <input
         type="text"
-        className="p-2 border-b w-full border-indigo-300 mt-5 "
+        className="input placeholder:text-gray-600"
         placeholder="Name Client"
         value={client}
         onChange={e => setClient(e.target.value)}
       />
       <input
         type="text"
-        className="p-2 border-b w-full border-indigo-300 mt-5 "
+        className="input placeholder:text-gray-600"
         placeholder="Name Project"
         value={name}
         onChange={e => setName(e.target.value)}
       />
       <textarea
-        className="p-2 border-b w-full border-indigo-300 mt-5 "
+        className="input placeholder:text-gray-600 h-60"
         placeholder="Project Description"
         value={description}
         onChange={e => setDescription(e.target.value)}
@@ -67,14 +67,14 @@ export const FormProject = () => {
       <label className="text-gray-500 text-sm mt-5 p-2">Delivery Date</label>
       <input
         type="date"
-        className="p-2 border-b w-full border-indigo-300  "
+        className="input  placeholder:text-gray-600"
         placeholder="Name Project"
         value={deliveryDate}
         onChange={e => setDeliveryDate(e.target.value)}
       />
       <input
-        className="bg-indigo-700 w-full cursor-pointer transition-colors hover:bg-indigo-900 text-white px-10 py-2 rounded-full mt-10"
-        type="submit"
+        className="btn-primary text-center"
+        type="submit placeholder:text-gray-600"
         value={id ? "Update Project" : "Create Project"}
         onClick={handleSubmit}
       />

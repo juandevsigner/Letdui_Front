@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Alert } from "../../ui";
 import axiosClient from "../../config/axiosClient";
 import { useAuth } from "../../hooks";
+import { Heading } from "../components";
 
 export const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -42,21 +43,21 @@ export const Login = () => {
 
   return (
     <div>
-      <h1 className="text-indigo-700 text-2xl capitalize text-center">
-        - Welcome to <span className="font-semibold">Letdui -</span>
-      </h1>
-      <p className="text-center">Admin your projects</p>
-      <form className=" bg-white p-10 rounded-lg">
+      <Heading />
+      <form className=" p-10 rounded-lg">
         {msg.length !== 0 && <Alert error={error} msg={msg} />}
+        <h1 className="text-indigo-700 text-2xl capitalize text-center">
+          log in
+        </h1>
         <input
-          className=" p-2 border-b w-full border-indigo-300 mt-5"
+          className="input"
           placeholder="Enter your email"
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
         />
         <input
-          className=" p-2 border-b w-full border-indigo-300 mt-5"
+          className="input"
           placeholder="Enter your password"
           type="password"
           value={password}
@@ -64,7 +65,7 @@ export const Login = () => {
         />
         <div>
           <input
-            className="bg-indigo-700 w-full cursor-pointer transition-colors hover:bg-indigo-900 text-white px-10 py-2 rounded-full mt-10"
+            className="btn-primary"
             type="submit"
             value="Login"
             onClick={handleSubmit}
@@ -79,7 +80,7 @@ export const Login = () => {
           Don't have an account?
         </Link>
         <Link
-          className="text-slate-500 text-sm md:text-base hover:text-indigo-600 "
+          className="text-slate-500 text-sm md:text-base hover:text-indigo-600"
           to="recover-pass"
         >
           Forgot your password?

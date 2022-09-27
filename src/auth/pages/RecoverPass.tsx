@@ -2,6 +2,7 @@ import { useState, FormEvent } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { Alert } from "../../ui/Alert";
 import axiosClient from "../../config/axiosClient";
+import { Heading } from "../components";
 
 export const RecoverPass = () => {
   const [email, setEmail] = useState<string>("");
@@ -41,14 +42,14 @@ export const RecoverPass = () => {
 
   return (
     <div>
-      <h1 className="text-indigo-700 text-2xl capitalize text-center">
-        Recover <span className="font-semibold">your password</span>
-      </h1>
-
-      <form className=" bg-white  p-10 rounded-lg">
+      <Heading />
+      <form className="  p-10 rounded-lg">
         {msg.length !== 0 && <Alert error={error} msg={msg} />}
+        <h1 className="text-indigo-700 text-2xl capitalize text-center">
+          Recover <span className="font-semibold">your password</span>
+        </h1>
         <input
-          className="p-2 border-b w-full border-indigo-300 mt-5"
+          className="input"
           placeholder="Enter your email"
           type="email"
           value={email}
@@ -57,7 +58,7 @@ export const RecoverPass = () => {
 
         <div>
           <input
-            className="bg-indigo-700 w-full cursor-pointer transition-colors hover:bg-indigo-900 text-white px-10 py-2 rounded-lg mt-5"
+            className="btn-primary"
             type="submit"
             value="Send Instructions"
             onClick={handleSubmit}
