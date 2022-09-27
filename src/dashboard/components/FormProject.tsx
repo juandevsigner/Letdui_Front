@@ -59,7 +59,7 @@ export const FormProject = () => {
         onChange={e => setName(e.target.value)}
       />
       <textarea
-        className="input placeholder:text-gray-600 h-60"
+        className="input placeholder:text-gray-600"
         placeholder="Project Description"
         value={description}
         onChange={e => setDescription(e.target.value)}
