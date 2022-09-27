@@ -72,7 +72,7 @@ export const Login = () => {
           />
         </div>
       </form>
-      <nav className="flex justify-between">
+      <nav className="flex flex-col items-center justify-between ">
         <Link
           className="text-slate-500 text-sm md:text-base hover:text-indigo-600 "
           to="register"
