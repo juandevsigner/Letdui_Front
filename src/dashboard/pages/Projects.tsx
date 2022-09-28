@@ -47,7 +47,7 @@ export const Projects = () => {
           </>
         ) : (
           <>
-            <div className="mt-5 flex flex-col justify-center items-center gap-2">
+            <div className="py-5 flex flex-col justify-center items-center gap-2">
               <p className="text-indigo-800 font-semibold text-xl uppercase">
                 It's very lonely here
               </p>
