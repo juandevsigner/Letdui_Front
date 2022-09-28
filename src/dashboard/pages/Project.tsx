@@ -130,7 +130,7 @@ export const Project = () => {
             <p className="text-xl text-indigo-600 text-center mb-2">
               No homework here!
             </p>
-            <p>Add a Task - click on button "Create Task" </p>
+            <p>Add a Task </p>
           </div>
         )}
       </div>
@@ -177,7 +177,7 @@ export const Project = () => {
             </>
           ) : (
             <p className="text-center">
-              No collaborators yet - Add a Collaborator - click on button "Add"
+              No collaborators yet - Add a Collaborator
             </p>
           )}
         </div>
